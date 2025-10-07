@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEX GPT - Login/Signup</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* Basic styles for login/sign up panel */
+body{margin:0;padding:0;font-family:sans-serif;background:#0f172a;color:#f8fafc;display:flex;justify-content:center;align-items:center;height:100vh;}
+.login-card{background:rgba(30,41,59,0.9);padding:40px;border-radius:20px;width:100%;max-width:420px;}
+.form-input{width:100%;padding:14px 16px;margin:8px 0;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:16px;}
+.btn{padding:14px;cursor:pointer;width:100%;border:none;border-radius:8px;font-weight:bold;font-size:16px;margin-top:10px;}
+.btn-primary{background:#3b82f6;color:#fff;}
+.btn-secondary{background:#334155;color:#f8fafc;margin-top:5px;}
+</style>
+</head>
+<body>
+<div class="login-card">
+<h2>Login</h2>
+<div>
+<input type="text" id="username" class="form-input" placeholder="Username">
+<input type="password" id="password" class="form-input" placeholder="Password">
+<button class="btn btn-primary" onclick="login()">Login</button>
+<button class="btn btn-secondary" onclick="showRegister()">Create New Account</button>
+</div>
+<div id="registerForm" style="display:none;margin-top:20px;">
+<h3>Register</h3>
+<input type="text" id="regFullName" class="form-input" placeholder="Full Name">
+<input type="email" id="regEmail" class="form-input" placeholder="Email">
+<input type="text" id="regMobile" class="form-input" placeholder="Mobile (Optional)">
+<input type="date" id="regDOB" class="form-input" placeholder="Date of Birth">
+<input type="text" id="regUsername" class="form-input" placeholder="Username">
+<input type="password" id="regPassword" class="form-input" placeholder="Password">
+<button class="btn btn-primary" onclick="register()">Sign Up</button>
+</div>
+<script>
+function showRegister(){document.getElementById('registerForm').style.display='block';}
+function login(){
+    fetch('/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:document.getElementById('username').value,password:document.getElementById('password').value})})
+    .then(res=>res.json()).then(data=>{if(data.status=='success'){window.location='/';}else{alert(data.msg);}});
+}
+function register(){
+    let payload={
+        fullName:document.getElementById('regFullName').value,
+        email:document.getElementById('regEmail').value,
+        mobile:document.getElementById('regMobile').value,
+        dob:document.getElementById('regDOB').value,
+        username:document.getElementById('regUsername').value,
+        password:document.getElementById('regPassword').value
+    };
+    fetch('/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(res=>res.json()).then(data=>{if(data.status=='success'){window.location='/';}else{alert(data.msg);}});
+}
+</script>
+</body>
+</html>
